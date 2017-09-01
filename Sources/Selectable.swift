@@ -26,6 +26,8 @@
 
 import Foundation
 
+import XCEArrayExt
+
 // MARK: - Base declarations
 
 /**

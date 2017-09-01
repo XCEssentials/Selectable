@@ -187,8 +187,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 172E3CE05D487AA1D9275A53 /* Build configuration list for PBXNativeTarget "Fwk" */;
 			buildPhases = (
-				1142CE14808DEDD0A4DF48BF /* SwiftLint */,
 				E65319151F63BE2A977F6C3A /* [CP] Check Pods Manifest.lock */,
+				1142CE14808DEDD0A4DF48BF /* SwiftLint */,
 				FD146AAACE6866EB7FF77F9A /* Sources */,
 				290BB2E3276A95268EA5EBEC /* Frameworks */,
 				02B6B31B36523FB627387CE0 /* Embed Frameworks */,
