@@ -11,7 +11,7 @@ use_frameworks!
 
 def sharedPods
 
-	pod 'XCEArrayExt', '~> 1.0'
+	pod 'XCEArrayExt', '~> 1.1'
 
 end
 

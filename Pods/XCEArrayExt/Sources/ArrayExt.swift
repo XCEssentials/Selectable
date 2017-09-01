@@ -24,19 +24,19 @@
  
  */
 
+//===
+
+public
+struct XCEArrayProxy<Element>
+{
+    let array: [Element]
+}
+
 // MARK: - Custom prefix
 
 public
 extension Array
 {
-    public
-    struct XCEArrayProxy<Element>
-    {
-        let array: [Element]
-    }
-    
-    //===
-    
     public
     var xce: XCEArrayProxy<Element>
     {
@@ -47,23 +47,16 @@ extension Array
 // MARK: - Error declarations
 
 public
-extension Array.XCEArrayProxy
+enum Errors: Error
 {
-    public
-    enum Errors // scope
-    {
-        public
-        struct InvalidIndex: Error { }
-        
-        public
-        struct InvalidElement: Error { }
-    }
+    case invalidIndex
+    case invalidElement
 }
 
 // MARK: - Index validation
 
 public
-extension Array.XCEArrayProxy
+extension XCEArrayProxy
 {
     func isValidIndex(_ index: Int) -> Bool
     {
@@ -81,7 +74,7 @@ extension Array.XCEArrayProxy
 // MARK: - Element accessors
 
 public
-extension Array.XCEArrayProxy
+extension XCEArrayProxy
 {
     func element(at index: Int) throws -> Element
     {
@@ -89,7 +82,7 @@ extension Array.XCEArrayProxy
             isValidIndex(index)
         else
         {
-            throw Errors.InvalidIndex()
+            throw Errors.invalidIndex
         }
         
         //---
@@ -115,7 +108,7 @@ extension Array.XCEArrayProxy
 // MARK: - Element insertation
 
 public
-extension Array.XCEArrayProxy
+extension XCEArrayProxy
 {
     func insert(_ element: Element, at index: Int) throws -> [Element]
     {
@@ -123,7 +116,7 @@ extension Array.XCEArrayProxy
             isValidForInsertIndex(index)
         else
         {
-            throw Errors.InvalidIndex()
+            throw Errors.invalidIndex
         }
         
         //---
@@ -147,7 +140,7 @@ extension Array.XCEArrayProxy
             isValidForInsertIndex(index)
         else
         {
-            throw Errors.InvalidIndex()
+            throw Errors.invalidIndex
         }
         
         //---
@@ -167,7 +160,7 @@ extension Array.XCEArrayProxy
 // MARK: - Element removal
 
 public
-extension Array.XCEArrayProxy
+extension XCEArrayProxy
 {
     func remove(elementAt index: Int) throws -> [Element]
     {
@@ -175,7 +168,7 @@ extension Array.XCEArrayProxy
             isValidIndex(index)
         else
         {
-            throw Errors.InvalidIndex()
+            throw Errors.invalidIndex
         }
         
         //---
@@ -195,7 +188,7 @@ extension Array.XCEArrayProxy
 // MARK: - Element removal with Equatable elements
 
 public
-extension Array.XCEArrayProxy where Element: Equatable
+extension XCEArrayProxy where Element: Equatable
 {
     func remove(_ element: Element) throws -> [Element]
     {
@@ -203,7 +196,7 @@ extension Array.XCEArrayProxy where Element: Equatable
             let index = array.index(of: element)
         else
         {
-            throw Errors.InvalidElement()
+            throw Errors.invalidElement
         }
         
         //---

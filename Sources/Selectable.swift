@@ -98,14 +98,6 @@ struct Selectable<Element>
     
     public
     let allowMultipleSelection: Bool
-    
-    public
-    enum Errors
-    {
-        struct InvalidElement: Error { }
-        
-        struct InvalidIndex: Error { }
-    }
 }
 
 // MARK: - Special initializer for Equatable elements
@@ -162,7 +154,7 @@ extension Selectable
             let index = elements.index(where: { self.isEqual($0, element) })
         else
         {
-            throw Errors.InvalidElement()
+            throw Errors.invalidElement
         }
         
         //---
@@ -194,7 +186,7 @@ extension Selectable
             elements.xce.isValidIndex(index)
         else
         {
-            throw Errors.InvalidIndex()
+            throw Errors.invalidIndex
         }
         
         //---
@@ -226,7 +218,7 @@ extension Selectable
             let index = elements.index(where: { self.isEqual($0, element) })
         else
         {
-            throw Errors.InvalidElement()
+            throw Errors.invalidElement
         }
         
         //---
@@ -250,7 +242,7 @@ extension Selectable
             elements.xce.isValidIndex(index)
         else
         {
-            throw Errors.InvalidIndex()
+            throw Errors.invalidIndex
         }
         
         //---
