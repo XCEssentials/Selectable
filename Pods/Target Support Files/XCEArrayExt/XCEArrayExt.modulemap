@@ -1,0 +1,6 @@
+framework module XCEArrayExt {
+  umbrella header "XCEArrayExt-umbrella.h"
+
+  export *
+  module * { export * }
+}
