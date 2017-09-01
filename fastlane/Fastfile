@@ -144,7 +144,7 @@ platform :ios do
 
     # === Sort all project entries
 
-    sh 'cd ./.. && xcodeproj sort'
+    sh 'cd ./.. && xcodeproj sort && pod update'
 
     # === Add custom 'Run Script Phase' entries
 
@@ -161,7 +161,7 @@ platform :ios do
     # default initial location for any command
     # is inside 'Fastlane' folder
 
-    sh 'cd ./.. && struct generate'
+    sh 'cd ./.. && struct generate && pod update'
 
     # === Set proper build number (proper version number is stored in the Info file)
 
