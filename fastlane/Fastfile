@@ -144,7 +144,7 @@ platform :ios do
 
     # === Sort all project entries
 
-    sh 'cd ./.. && xcodeproj sort && pod update'
+    sh 'cd ./.. && xcodeproj sort'
 
     # === Add custom 'Run Script Phase' entries
 
@@ -174,7 +174,7 @@ platform :ios do
 
     # === Sort all project entries
 
-    sh 'cd ./.. && xcodeproj sort && pod update'
+    sh 'cd ./.. && xcodeproj sort'
 
     # === Add custom 'Run Script Phase' entries
 
