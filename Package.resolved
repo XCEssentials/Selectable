@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "XCEArrayExt",
+        "repositoryURL": "https://github.com/XCEssentials/ArrayExt",
+        "state": {
+          "branch": null,
+          "revision": "3747c67128817aa72286d6f02ae3dcea576b841a",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
