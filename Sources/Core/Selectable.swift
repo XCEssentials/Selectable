@@ -74,12 +74,20 @@ struct Selectable<Element>
             
             let oldSelectedElements = selection.map{ oldValue[$0] }
             
-            let newSelectedIndexes = oldSelectedElements.flatMap{ oldElement in
+            let newSelectedIndexes = oldSelectedElements.compactMap{
                 
-                newValue.index(where: { newElement in
+                oldElement in
+                
+                //---
+                
+                newValue.firstIndex{
+                    
+                    newElement in
+                    
+                    //---
                     
                     isEqual(newElement, oldElement)
-                })
+                }
             }
             
             selection = Set(newSelectedIndexes)
