@@ -163,9 +163,15 @@ try CustomTextFile("""
                 ]
             )
         ],
+        dependencies: [
+            .package(url: "https://github.com/XCEssentials/ArrayExt", from: "2.0.0")
+        ],
         targets: [
             .target(
                 name: "\(targetNames.core)",
+                dependencies: [
+                    "XCEArrayExt"
+                ],
                 path: "\(sourcesLocations.core)"
             ),
             .testTarget(

@@ -12,9 +12,15 @@ let package = Package(
             ]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/XCEssentials/ArrayExt", from: "2.0.0")
+    ],
     targets: [
         .target(
             name: "XCESelectable",
+            dependencies: [
+                "XCEArrayExt"
+            ],
             path: "Sources/Core"
         ),
         .testTarget(
