@@ -25,21 +25,19 @@
  */
 
 import Foundation
-
 import XCEArrayExt
 
-// MARK: - Base declarations
+//---
 
-/**
- Array-like (and Array-based) data container that allows to store list of elements with built-in selection tracking.
- */
+/// Array-like (and Array-based) data container that allows to store list of elements
+/// with built-in selection tracking.
 public
 struct Selectable<Element>
 {
     // MARK: - Private members
 
     fileprivate
-    let isEqual: (Element, Element) -> Bool
+    let onCheckEquality: (Element, Element) -> Bool
     
     fileprivate
     var selection: Set<Int> = [] // indexes in 'elements'
@@ -49,12 +47,12 @@ struct Selectable<Element>
     public
     init(
         _ initialValues: [Element] = [],
-        _ multiSelection: Bool = false,
-        _ equalityCheck: @escaping (Element, Element) -> Bool
+        multiSelection: Bool = false,
+        onCheckEquality: @escaping (Element, Element) -> Bool
         )
     {
         self.allowMultipleSelection = multiSelection
-        self.isEqual = equalityCheck
+        self.onCheckEquality = onCheckEquality
         
         self.elements = initialValues
     }
@@ -66,10 +64,6 @@ struct Selectable<Element>
     {
         didSet
         {
-            let newValue = elements
-            
-            //---
-            
             // ensure that selection always contains valid indexes only
             
             let oldSelectedElements = selection.map{ oldValue[$0] }
@@ -80,13 +74,13 @@ struct Selectable<Element>
                 
                 //---
                 
-                newValue.firstIndex{
+                elements.firstIndex{
                     
                     newElement in
                     
                     //---
                     
-                    isEqual(newElement, oldElement)
+                    onCheckEquality(newElement, oldElement)
                 }
             }
             
@@ -115,10 +109,14 @@ extension Selectable where Element: Equatable
 {
     init(
         _ initialValues: [Element] = [],
-        _ multiSelection: Bool = false
+        multiSelection: Bool = false
         )
     {
-        self.init(initialValues, multiSelection, ==)
+        self.init(
+            initialValues,
+            multiSelection: multiSelection,
+            onCheckEquality: ==
+        )
     }
 }
 
@@ -132,14 +130,10 @@ extension Selectable
         return Array(selection)
     }
     
-    //===
-    
     var selectedElements: [Element]
     {
         return selectedIndexes.map{ elements[$0] }
     }
-    
-    //===
     
     var selectedElement: Element?
     {
@@ -154,12 +148,12 @@ extension Selectable
         }
     }
     
-    //===
-    
-    func select(_ element: Element) throws -> Selectable<Element>
+    @discardableResult
+    mutating
+    func select(_ element: Element) throws -> Self
     {
         guard
-            let index = elements.index(where: { self.isEqual($0, element) })
+            let index = elements.firstIndex(where: { self.onCheckEquality($0, element) })
         else
         {
             throw Errors.invalidElement
@@ -167,28 +161,24 @@ extension Selectable
         
         //---
         
-        var result = self
-        
-        //---
-        
         if
             !allowMultipleSelection
         {
-            result.selection.removeAll()
+            selection.removeAll()
         }
         
         //---
         
-        result.selection.insert(index)
+        selection.insert(index)
         
         //---
         
-        return result
+        return self
     }
     
-    //===
-    
-    func select(at index: Int) throws -> Selectable<Element>
+    @discardableResult
+    mutating
+    func select(at index: Int) throws -> Self
     {
         guard
             elements.xce.isValidIndex(index)
@@ -199,31 +189,27 @@ extension Selectable
         
         //---
         
-        var result = self
-        
-        //---
-        
         if
             !allowMultipleSelection
         {
-            result.selection.removeAll()
+            selection.removeAll()
         }
         
         //---
         
-        result.selection.insert(index)
+        selection.insert(index)
         
         //---
         
-        return result
+        return self
     }
     
-    //===
-    
-    func deselect(_ element: Element) throws -> Selectable<Element>
+    @discardableResult
+    mutating
+    func deselect(_ element: Element) throws -> Self
     {
         guard
-            let index = elements.index(where: { self.isEqual($0, element) })
+            let index = elements.firstIndex(where: { self.onCheckEquality($0, element) })
         else
         {
             throw Errors.invalidElement
@@ -231,20 +217,16 @@ extension Selectable
         
         //---
         
-        var result = self
+        selection.remove(index)
         
         //---
         
-        result.selection.remove(index)
-        
-        //---
-        
-        return result
+        return self
     }
     
-    //===
-    
-    func deselect(at index: Int) throws -> Selectable<Element>
+    @discardableResult
+    mutating
+    func deselect(at index: Int) throws -> Self
     {
         guard
             elements.xce.isValidIndex(index)
@@ -255,36 +237,21 @@ extension Selectable
         
         //---
         
-        var result = self
+        selection.remove(index)
         
         //---
         
-        result.selection.remove(index)
-        
-        //---
-        
-        return result
+        return self
     }
     
-    //===
-    
-    func deselectAll() -> Selectable<Element>
+    @discardableResult
+    mutating
+    func deselectAll() -> Self
     {
-        var result = self
+        selection.removeAll()
         
         //---
         
-        result.selection.removeAll()
-        
-        //---
-        
-        return result
-    }
-    
-    //===
-    
-    func clearSelection() -> Selectable<Element>
-    {
-        return deselectAll()
+        return self
     }
 }
